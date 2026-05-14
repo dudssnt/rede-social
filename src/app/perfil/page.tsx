@@ -22,7 +22,7 @@ export default function PerfilPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState('');
   const [editBio, setEditBio] = useState('');
-  const [editAvatar, setEditAvatar] = useState<string | undefined>(undefined); // Mudar para undefined
+  const [editAvatar, setEditAvatar] = useState<string | undefined>(undefined); 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function PerfilPage() {
     if (user) {
       setEditName(user.name);
       setEditBio(user.bio || '');
-      setEditAvatar(user.avatar || undefined); // Mudar para undefined
+      setEditAvatar(user.avatar || undefined); 
       const posts = storage.getUserPosts(user.id);
       setUserPosts(posts);
     }
@@ -61,7 +61,7 @@ export default function PerfilPage() {
       const updates = {
         name: editName,
         bio: editBio,
-        avatar: editAvatar // Agora é string | undefined, não null
+        avatar: editAvatar 
       };
       AuthService.updateProfile(updates);
       
@@ -92,7 +92,7 @@ export default function PerfilPage() {
       <Header user={currentUser} />
       <main className="container mx-auto px-4 py-8 max-w-2xl">
         <div className="space-y-6">
-          {/* Informações do Perfil */}
+          
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center gap-2">
@@ -195,7 +195,6 @@ export default function PerfilPage() {
             </CardContent>
           </Card>
 
-          {/* Posts do Usuário */}
           <Card>
             <CardHeader>
               <CardTitle>Meus Posts</CardTitle>

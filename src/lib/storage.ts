@@ -1,6 +1,6 @@
 'use client';
 
-import { User, Post, PostComment } from '@/types'; // Mudar para PostComment
+import { User, Post, PostComment } from '@/types';
 
 const STORAGE_KEYS = {
   USERS: 'social_users',
@@ -9,7 +9,6 @@ const STORAGE_KEYS = {
 };
 
 export const storage = {
-  // ============== USER METHODS ==============
   getUsers: (): User[] => {
     if (typeof window === 'undefined') return [];
     const users = localStorage.getItem(STORAGE_KEYS.USERS);
@@ -36,7 +35,6 @@ export const storage = {
     }
   },
 
-  // ============== POST METHODS ==============
   getPosts: (): Post[] => {
     if (typeof window === 'undefined') return [];
     const posts = localStorage.getItem(STORAGE_KEYS.POSTS);
@@ -86,7 +84,7 @@ export const storage = {
     }
   },
 
-  addComment: (postId: number, comment: PostComment): void => { // Mudar para PostComment
+  addComment: (postId: number, comment: PostComment): void => {
     const posts = storage.getPosts();
     const post = posts.find(p => p.id === postId);
     if (post) {
@@ -100,7 +98,6 @@ export const storage = {
     return posts.filter(post => post.autorId === userId);
   },
 
-  // ============== PROFILE METHODS ==============
   updateUser: (userId: string, updates: Partial<User>): void => {
     const users = storage.getUsers();
     const index = users.findIndex(u => u.id === userId);
