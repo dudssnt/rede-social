@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea';
 import { Heart, MessageCircle, Trash2, Send } from 'lucide-react';
 import Image from 'next/image';
-import { Comment } from '@/types';
+import { PostComment } from '@/types'; // Mudar de Comment para PostComment
 
 interface PostCardProps {
   id: number;
@@ -18,7 +18,7 @@ interface PostCardProps {
   imagem?: string;
   data: string;
   curtidas: string[];
-  comentarios: Comment[];
+  comentarios: PostComment[]; // Mudar para PostComment[]
   currentUserId?: string;
   currentUserAvatar?: string;
   currentUserName?: string;
@@ -91,7 +91,7 @@ export default function PostCard({
               alt="Post image"
               fill
               className="object-contain"
-              unoptimized 
+              unoptimized
             />
           </div>
         )}
@@ -121,7 +121,7 @@ export default function PostCard({
 
         {showComments && (
           <div className="w-full space-y-4 pt-4 border-t">
-          
+            {/* Comentários existentes */}
             {comentarios.map(comment => (
               <div key={comment.id} className="flex gap-3">
                 <Avatar className="h-8 w-8">
@@ -140,6 +140,7 @@ export default function PostCard({
               </div>
             ))}
             
+            {/* Novo comentário */}
             {currentUserId && (
               <div className="flex gap-3 items-start">
                 <Avatar className="h-8 w-8">

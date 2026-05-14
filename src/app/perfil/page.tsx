@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthService } from '@/lib/auth';
 import { storage } from '@/lib/storage';
-import { User, Post, PostComment } from '@/types'; // Mudar para PostComment
+import { User, Post, PostComment } from '@/types'; // Mudar de Comment para PostComment
 import Header from '@/components/Header';
 import PostCard from '@/components/PostCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

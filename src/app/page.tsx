@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthService } from '@/lib/auth';
 import { storage } from '@/lib/storage';
-import { Post, User, PostComment } from '@/types'; // Mudar para PostComment
+import { Post, User, PostComment } from '@/types'; // Mudar de Comment para PostComment
 import Header from '@/components/Header';
 import CreatePost from '@/components/CreatePost';
 import PostCard from '@/components/PostCard';
@@ -50,7 +50,7 @@ export default function FeedPage() {
 
   const handleComment = (postId: number, commentText: string) => {
     if (currentUser) {
-      const comment: PostComment = { // Usar PostComment
+      const comment: PostComment = {
         id: Date.now().toString(),
         postId: postId,
         autorId: currentUser.id,

@@ -7,7 +7,8 @@ export interface User {
   avatar?: string;
   createdAt: string;
 }
-export interface PostComment {
+
+export interface PostComment {  
   id: string;
   postId: number;
   autorId: string;
@@ -26,7 +27,7 @@ export interface Post {
   imagem?: string;
   data: string;
   curtidas: string[];
-  comentarios: PostComment[]; 
+  comentarios: PostComment[];  
 }
 
 export interface AuthContextType {
