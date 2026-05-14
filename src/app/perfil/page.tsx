@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthService } from '@/lib/auth';
 import { storage } from '@/lib/storage';
-import { User, Post, PostComment } from '@/types'; // Mudar de Comment para PostComment
+import { User, Post } from '@/types';
 import Header from '@/components/Header';
 import PostCard from '@/components/PostCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,7 +22,7 @@ export default function PerfilPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState('');
   const [editBio, setEditBio] = useState('');
-  const [editAvatar, setEditAvatar] = useState<string | null>(null);
+  const [editAvatar, setEditAvatar] = useState<string | undefined>(undefined); // Mudar para undefined
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function PerfilPage() {
     if (user) {
       setEditName(user.name);
       setEditBio(user.bio || '');
-      setEditAvatar(user.avatar || null);
+      setEditAvatar(user.avatar || undefined); // Mudar para undefined
       const posts = storage.getUserPosts(user.id);
       setUserPosts(posts);
     }
@@ -61,7 +61,7 @@ export default function PerfilPage() {
       const updates = {
         name: editName,
         bio: editBio,
-        avatar: editAvatar || undefined
+        avatar: editAvatar // Agora é string | undefined, não null
       };
       AuthService.updateProfile(updates);
       
