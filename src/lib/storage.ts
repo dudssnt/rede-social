@@ -1,6 +1,6 @@
 'use client';
 
-import { User, Post, Comment } from '@/types';
+import { User, Post, PostComment } from '@/types'; // Mudar para PostComment
 
 const STORAGE_KEYS = {
   USERS: 'social_users',
@@ -41,7 +41,6 @@ export const storage = {
     if (typeof window === 'undefined') return [];
     const posts = localStorage.getItem(STORAGE_KEYS.POSTS);
     if (!posts) {
-      // Retorna array vazio ao invés de posts pré-definidos
       storage.savePosts([]);
       return [];
     }
@@ -87,18 +86,14 @@ export const storage = {
     }
   },
 
-  addComment: (postId: number, comment: Comment): void => {
-  const posts = storage.getPosts();
-  const post = posts.find(p => p.id === postId);
-  if (post) {
-    const normalizedComment = {
-      ...comment,
-      autorAvatar: comment.autorAvatar || undefined
-    };
-    post.comentarios.push(normalizedComment);
-    storage.savePosts(posts);
-  }
-},
+  addComment: (postId: number, comment: PostComment): void => { // Mudar para PostComment
+    const posts = storage.getPosts();
+    const post = posts.find(p => p.id === postId);
+    if (post) {
+      post.comentarios.push(comment);
+      storage.savePosts(posts);
+    }
+  },
 
   getUserPosts: (userId: string): Post[] => {
     const posts = storage.getPosts();
@@ -113,13 +108,11 @@ export const storage = {
       users[index] = { ...users[index], ...updates };
       storage.saveUsers(users);
       
-      // Update current user if it's the same
       const currentUser = storage.getCurrentUser();
       if (currentUser && currentUser.id === userId) {
         storage.saveCurrentUser(users[index]);
       }
       
-      // Update author info in posts
       const posts = storage.getPosts();
       posts.forEach(post => {
         if (post.autorId === userId) {

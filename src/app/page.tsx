@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthService } from '@/lib/auth';
 import { storage } from '@/lib/storage';
-import { Post, User } from '@/types';
+import { Post, User, PostComment } from '@/types'; // Mudar para PostComment
 import Header from '@/components/Header';
 import CreatePost from '@/components/CreatePost';
 import PostCard from '@/components/PostCard';
@@ -44,31 +44,31 @@ export default function FeedPage() {
   const handleLike = (postId: number) => {
     if (currentUser) {
       storage.toggleLike(postId, currentUser.id);
-      loadPosts(); 
+      loadPosts();
     }
   };
 
   const handleComment = (postId: number, commentText: string) => {
-  if (currentUser) {
-    const comment: Comment = {
-      id: Date.now().toString(),
-      postId: postId,
-      autorId: currentUser.id,
-      autor: currentUser.name,
-      autorAvatar: currentUser.avatar || undefined, 
-      conteudo: commentText,
-      data: new Date().toLocaleDateString('pt-BR', {
-        day: '2-digit', 
-        month: '2-digit', 
-        year: 'numeric',
-        hour: '2-digit', 
-        minute: '2-digit'
-      })
-    };
-    storage.addComment(postId, comment);
-    loadPosts(); 
-  }
-};
+    if (currentUser) {
+      const comment: PostComment = { // Usar PostComment
+        id: Date.now().toString(),
+        postId: postId,
+        autorId: currentUser.id,
+        autor: currentUser.name,
+        autorAvatar: currentUser.avatar || undefined,
+        conteudo: commentText,
+        data: new Date().toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      };
+      storage.addComment(postId, comment);
+      loadPosts();
+    }
+  };
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Carregando...</div>;

@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthService } from '@/lib/auth';
 import { storage } from '@/lib/storage';
-import { User, Post } from '@/types';
+import { User, Post, PostComment } from '@/types'; // Mudar para PostComment
 import Header from '@/components/Header';
 import PostCard from '@/components/PostCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,7 +13,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { User as UserIcon, Mail, FileText, Edit2, Camera } from 'lucide-react';
-import Image from 'next/image';
 
 export default function PerfilPage() {
   const router = useRouter();
@@ -93,6 +92,7 @@ export default function PerfilPage() {
       <Header user={currentUser} />
       <main className="container mx-auto px-4 py-8 max-w-2xl">
         <div className="space-y-6">
+          {/* Informações do Perfil */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center gap-2">
@@ -195,6 +195,7 @@ export default function PerfilPage() {
             </CardContent>
           </Card>
 
+          {/* Posts do Usuário */}
           <Card>
             <CardHeader>
               <CardTitle>Meus Posts</CardTitle>
@@ -222,8 +223,8 @@ export default function PerfilPage() {
                       currentUserAvatar={currentUser.avatar}
                       currentUserName={currentUser.name}
                       onDelete={handleDeletePost}
-                      onLike={() => {}} 
-                      onComment={() => {}} 
+                      onLike={() => {}}
+                      onComment={() => {}}
                     />
                   ))}
                 </div>

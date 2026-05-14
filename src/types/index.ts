@@ -4,16 +4,15 @@ export interface User {
   email: string;
   password: string;
   bio?: string;
-  avatar?: string; // URL da foto de perfil (base64)
+  avatar?: string;
   createdAt: string;
 }
-
-export interface Comment {
+export interface PostComment {
   id: string;
   postId: number;
   autorId: string;
   autor: string;
-  autorAvatar?: string; // Mudar para string | undefined (sem null)
+  autorAvatar?: string;
   conteudo: string;
   data: string;
 }
@@ -22,12 +21,12 @@ export interface Post {
   id: number;
   autor: string;
   autorId: string;
-  autorAvatar?: string; // Mudar para string | undefined (sem null)
+  autorAvatar?: string;
   conteudo: string;
   imagem?: string;
   data: string;
   curtidas: string[];
-  comentarios: Comment[];
+  comentarios: PostComment[]; 
 }
 
 export interface AuthContextType {
