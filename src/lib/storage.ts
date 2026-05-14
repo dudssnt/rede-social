@@ -1,4 +1,6 @@
-import { User, Post } from '@/types';
+'use client';
+
+import { User, Post, Comment } from '@/types';
 
 const STORAGE_KEYS = {
   USERS: 'social_users',
@@ -6,7 +8,54 @@ const STORAGE_KEYS = {
   CURRENT_USER: 'social_current_user'
 };
 
+// Posts iniciais para popular o feed
+const INITIAL_POSTS: Post[] = [
+  {
+    id: 1,
+    autor: "Ana Silva",
+    autorId: "initial_1",
+    autorAvatar: undefined,
+    conteudo: "Bem-vindos à Mini Rede Social! 🎉 Aqui vocês podem compartilhar momentos, fotos e interagir com amigos.",
+    imagem: undefined,
+    data: new Date(2024, 0, 1, 10, 30).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: '2-digit', year: 'numeric', 
+      hour: '2-digit', minute: '2-digit'
+    }),
+    curtidas: [],
+    comentarios: []
+  },
+  {
+    id: 2,
+    autor: "Carlos Mendes",
+    autorId: "initial_2",
+    autorAvatar: undefined,
+    conteudo: "Acabei de voltar da praia! 🌊 Dia incrível com muito sol e mar azul. Recomendo para todos!",
+    imagem: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500",
+    data: new Date(2024, 0, 2, 15, 20).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    }),
+    curtidas: [],
+    comentarios: []
+  },
+  {
+    id: 3,
+    autor: "Mariana Costa",
+    autorId: "initial_3",
+    autorAvatar: undefined,
+    conteudo: "Novo projeto de programação! 🚀 Aprendendo Next.js e React - amando cada momento!",
+    imagem: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=500",
+    data: new Date(2024, 0, 3, 9, 45).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    }),
+    curtidas: [],
+    comentarios: []
+  }
+];
+
 export const storage = {
+  // ============== USER METHODS ==============
   getUsers: (): User[] => {
     if (typeof window === 'undefined') return [];
     const users = localStorage.getItem(STORAGE_KEYS.USERS);
@@ -33,10 +82,16 @@ export const storage = {
     }
   },
 
+  // ============== POST METHODS ==============
   getPosts: (): Post[] => {
     if (typeof window === 'undefined') return [];
     const posts = localStorage.getItem(STORAGE_KEYS.POSTS);
-    return posts ? JSON.parse(posts) : [];
+    if (!posts) {
+      // Inicializar com posts padrão
+      storage.savePosts(INITIAL_POSTS);
+      return INITIAL_POSTS;
+    }
+    return JSON.parse(posts);
   },
 
   savePosts: (posts: Post[]): void => {
@@ -56,8 +111,71 @@ export const storage = {
     storage.savePosts(filteredPosts);
   },
 
+  updatePost: (postId: number, updates: Partial<Post>): void => {
+    const posts = storage.getPosts();
+    const index = posts.findIndex(p => p.id === postId);
+    if (index !== -1) {
+      posts[index] = { ...posts[index], ...updates };
+      storage.savePosts(posts);
+    }
+  },
+
+  toggleLike: (postId: number, userId: string): void => {
+    const posts = storage.getPosts();
+    const post = posts.find(p => p.id === postId);
+    if (post) {
+      if (post.curtidas.includes(userId)) {
+        post.curtidas = post.curtidas.filter(id => id !== userId);
+      } else {
+        post.curtidas.push(userId);
+      }
+      storage.savePosts(posts);
+    }
+  },
+
+  addComment: (postId: number, comment: Comment): void => {
+    const posts = storage.getPosts();
+    const post = posts.find(p => p.id === postId);
+    if (post) {
+      post.comentarios.push(comment);
+      storage.savePosts(posts);
+    }
+  },
+
   getUserPosts: (userId: string): Post[] => {
     const posts = storage.getPosts();
     return posts.filter(post => post.autorId === userId);
+  },
+
+  // ============== PROFILE METHODS ==============
+  updateUser: (userId: string, updates: Partial<User>): void => {
+    const users = storage.getUsers();
+    const index = users.findIndex(u => u.id === userId);
+    if (index !== -1) {
+      users[index] = { ...users[index], ...updates };
+      storage.saveUsers(users);
+      
+      // Update current user if it's the same
+      const currentUser = storage.getCurrentUser();
+      if (currentUser && currentUser.id === userId) {
+        storage.saveCurrentUser(users[index]);
+      }
+      
+      // Update author info in posts
+      const posts = storage.getPosts();
+      posts.forEach(post => {
+        if (post.autorId === userId) {
+          post.autor = users[index].name;
+          post.autorAvatar = users[index].avatar;
+        }
+        post.comentarios.forEach(comment => {
+          if (comment.autorId === userId) {
+            comment.autor = users[index].name;
+            comment.autorAvatar = users[index].avatar;
+          }
+        });
+      });
+      storage.savePosts(posts);
+    }
   }
 };
