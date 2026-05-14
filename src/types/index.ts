@@ -4,7 +4,7 @@ export interface User {
   email: string;
   password: string;
   bio?: string;
-  avatar?: string | null;
+  avatar?: string; // URL da foto de perfil (base64)
   createdAt: string;
 }
 
@@ -13,7 +13,7 @@ export interface Comment {
   postId: number;
   autorId: string;
   autor: string;
-  autorAvatar?: string;
+  autorAvatar?: string; // Mudar para string | undefined (sem null)
   conteudo: string;
   data: string;
 }
@@ -22,11 +22,11 @@ export interface Post {
   id: number;
   autor: string;
   autorId: string;
-  autorAvatar?: string;
+  autorAvatar?: string; // Mudar para string | undefined (sem null)
   conteudo: string;
-  imagem?: string; 
+  imagem?: string;
   data: string;
-  curtidas: string[]; 
+  curtidas: string[];
   comentarios: Comment[];
 }
 

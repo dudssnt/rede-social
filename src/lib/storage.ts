@@ -88,13 +88,17 @@ export const storage = {
   },
 
   addComment: (postId: number, comment: Comment): void => {
-    const posts = storage.getPosts();
-    const post = posts.find(p => p.id === postId);
-    if (post) {
-      post.comentarios.push(comment);
-      storage.savePosts(posts);
-    }
-  },
+  const posts = storage.getPosts();
+  const post = posts.find(p => p.id === postId);
+  if (post) {
+    const normalizedComment = {
+      ...comment,
+      autorAvatar: comment.autorAvatar || undefined
+    };
+    post.comentarios.push(normalizedComment);
+    storage.savePosts(posts);
+  }
+},
 
   getUserPosts: (userId: string): Post[] => {
     const posts = storage.getPosts();
