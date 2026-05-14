@@ -17,7 +17,7 @@ export class AuthService {
       email,
       password,
       bio: "Olá! Estou usando a Mini Rede Social! 🚀",
-      avatar: null,
+      avatar?: string,
       createdAt: new Date().toISOString()
     };
 
