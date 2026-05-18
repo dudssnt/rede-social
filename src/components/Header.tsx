@@ -35,7 +35,7 @@ export default function Header({ user }: HeaderProps) {
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            RedeSocial
+            Mini Rede Social
           </Link>
 
           <nav className="flex items-center gap-4">
