@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Home, User, LogOut } from 'lucide-react';
 import { User as UserType } from '@/types';
 import { AuthService } from '@/lib/auth';
@@ -35,7 +35,7 @@ export default function Header({ user }: HeaderProps) {
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Mini Rede Social
+            MiauSocial
           </Link>
 
           <nav className="flex items-center gap-4">
@@ -55,6 +55,7 @@ export default function Header({ user }: HeaderProps) {
             <div className="flex items-center gap-3 ml-4 pl-4 border-l">
               <div className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
+                  <AvatarImage src={user.avatar || ''} />
                   <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm">
                     {initials}
                   </AvatarFallback>

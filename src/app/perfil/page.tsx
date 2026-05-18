@@ -22,8 +22,21 @@ export default function PerfilPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState('');
   const [editBio, setEditBio] = useState('');
-  const [editAvatar, setEditAvatar] = useState<string | undefined>(undefined); 
+  const [editAvatar, setEditAvatar] = useState<string | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const loadUserData = () => {
+    const user = AuthService.getCurrentUser();
+    setCurrentUser(user);
+    
+    if (user) {
+      setEditName(user.name);
+      setEditBio(user.bio || '');
+      setEditAvatar(user.avatar || undefined);
+      const posts = storage.getUserPosts(user.id);
+      setUserPosts(posts);
+    }
+  };
 
   useEffect(() => {
     if (!AuthService.isAuthenticated()) {
@@ -31,17 +44,7 @@ export default function PerfilPage() {
       return;
     }
 
-    const user = AuthService.getCurrentUser();
-    setCurrentUser(user);
-    
-    if (user) {
-      setEditName(user.name);
-      setEditBio(user.bio || '');
-      setEditAvatar(user.avatar || undefined); 
-      const posts = storage.getUserPosts(user.id);
-      setUserPosts(posts);
-    }
-    
+    loadUserData();
     setLoading(false);
   }, [router]);
 
@@ -56,20 +59,25 @@ export default function PerfilPage() {
     }
   };
 
-  const handleSaveProfile = () => {
+  const handleSaveProfile = async () => {
     if (currentUser) {
       const updates = {
         name: editName,
         bio: editBio,
-        avatar: editAvatar 
+        avatar: editAvatar
       };
+      
       AuthService.updateProfile(updates);
       
-      setCurrentUser({ ...currentUser, ...updates });
+      const updatedUser = AuthService.getCurrentUser();
+      setCurrentUser(updatedUser);
+      
       setIsEditing(false);
       
-      const posts = storage.getUserPosts(currentUser.id);
-      setUserPosts(posts);
+      if (updatedUser) {
+        const posts = storage.getUserPosts(updatedUser.id);
+        setUserPosts(posts);
+      }
     }
   };
 
@@ -92,7 +100,6 @@ export default function PerfilPage() {
       <Header user={currentUser} />
       <main className="container mx-auto px-4 py-8 max-w-2xl">
         <div className="space-y-6">
-          
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center gap-2">

@@ -17,7 +17,7 @@ export class AuthService {
       email,
       password,
       bio: "Olá! Estou usando a Mini Rede Social! 🚀",
-      avatar: undefined, // Mudar de null para undefined
+      avatar: undefined, 
       createdAt: new Date().toISOString()
     };
 
@@ -50,10 +50,13 @@ export class AuthService {
     return storage.getCurrentUser();
   }
 
-  static updateProfile(updates: Partial<User>): void {
-    const currentUser = storage.getCurrentUser();
-    if (currentUser) {
-      storage.updateUser(currentUser.id, updates);
-    }
+
+  static updateProfile(updates: Partial<User>): User | null {
+  const currentUser = storage.getCurrentUser();
+  if (currentUser) {
+    storage.updateUser(currentUser.id, updates);
+    return storage.getCurrentUser();
   }
+  return null;
+}
 }

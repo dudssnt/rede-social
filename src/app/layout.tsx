@@ -5,8 +5,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Mini Rede Social',
-  description: 'Uma mini rede social com Next.js e shadcn/ui',
+  title: 'MiauSocial',
+  description: 'MiauSocial - Sua mini rede social com Next.js e shadcn/ui',
 };
 
 export default function RootLayout({
